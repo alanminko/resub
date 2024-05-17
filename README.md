@@ -3,7 +3,7 @@
 
 This repository contains guidelines for running various resubstitution engines in [ABC](https://github.com/berkeley-abc/abc).
 
-The engines are exercised on the level of individual Boolean transforms. The focus is not high performance on specific benchmarks but rather
+The engines are exercised on the level of individual Boolean transforms. The focus is not high performance on specific circuits but rather
 conceptual understanding and implementation flexiblity needed for building efficient optimization frameworks based on Boolean resubstitution.
 
 ---
@@ -27,14 +27,16 @@ The second engine uses more effort to perform two steps. Given a target node and
 the first step is to compute a small support (or a good-quality support if the divisors have non-unit weights)
 sufficient for expressing the target node. The second step is to find the new function of the node in terms of the support variables.
 This engine works for incompletely-specified functions. It can be iterated to find solutions for multi-output functions.
-The engine was used to derive patch functions in the ECO application, winning the first place in [2017 ICCAD CAD competition](https://www.iccad-contest.org/2017/) (Problem A).
+The engine was used to derive ECO patch functions, winning the first place in [2017 ICCAD CAD competition](https://www.iccad-contest.org/2017/) (Problem A).
 
-The third engine is a high-effort SAT-based exact synthesis engine applicable to multi-output Boolean functions and relations with side-divisor, 
-that is, reusable divisor functions other than primary inputs. (The original formulation of SAT-based exact synthesis did not consider side-divisors).
-This engine computes the smallest possible implementation of the resub functions in terms of the number of nodes
-in an and-inverter graph (AIG) or an xor-and-inverter graph (XAIG).
+The third engine is running high-effort SAT-based exact synthesis applicable to multi-output Boolean functions and relations with side-divisors,
+that is, reusable divisors other than primary inputs. (The original formulation of SAT-based exact synthesis did not consider side-divisors).
+This engine computes the smallest possible implementation of the resub functions in terms of the number of nodes in an and-inverter graph (AIG) 
+or an xor-and-inverter graph (XAIG). This is the only engine capable of true multi-output logic synthesis, in the sense that it does not iterate
+resub for each output, but considers the whole multi-output Boolean relation as the specification and derives a minimum-node circuit satisfying 
+the relation. An obvious limitation of this engine that it only scales to circuits with up to six input and up to 10 nodes in the synthesized function.
 
-The three engines presented here have a shared input/output representation format.
+The three engines presented here can be applied to individual resub instances in a shared input/output representation format.
 
 ---
 
@@ -44,8 +46,8 @@ The input format is a modified version of [Espresso PLA format](https://people.e
 
 The modifications include
 * **Representation of Boolean relations**
-  * For this some input combinations are duplicated with different output combinations.
-* **Input patterns are represented as minterms**
+  * For this some input combinations can be duplicated and listed with different output combinations.
+* **Input patterns are represented as minterms rather than cubes**
   * This restriction works well when [simulation signatures](https://people.eecs.berkeley.edu/~alanmi/publications/2024/tech24_resub.pdf) are used. It may be removed in the future.
 
 Examples of completely-specified functions, incompletely-specified functions, and Boolean relations represented by the proposed format 
@@ -55,9 +57,9 @@ can be found in Figure 1 of the following [technical report](https://people.eecs
 
 ### Output Format
 
-The output format represents the resulting AIGs or XAIGs as arrays of node fanins.
+The output format for a synthesized circuit is an (X)AIGs represented as an array of fanin pairs for the nodes listed in a topological order.
 
-An example of the AIG produced by a resubstitution engine is given in Section V of the [technical report](https://people.eecs.berkeley.edu/~alanmi/publications/2024/tech24_resub.pdf).
+An example of the AIG produced by a resubstitution engine can be found in Section V of the [technical report](https://people.eecs.berkeley.edu/~alanmi/publications/2024/tech24_resub.pdf).
 
 ---
 
@@ -81,8 +83,8 @@ Three representative sets of resub benchmarks are currently available:
 
 ### Acknowledgment
 
-This work is done in collaboration with Yukio Miyasaka (UC Berkeley), Alessandro Tempia Calvino (EPFL), and Andrea Costamagna (EFPL). 
-It is supported in part by the SRC Contract 3173.001 "Standardizing Boolean transforms to improve quality and runtime of CAD tools"
+This work is done in collaboration with Yukio Miyasaka (UC Berkeley), Alessandro Tempia Calvino (EPFL), and Andrea Costamagna (EFPL).
+It is supported at UC Berkeley by the SRC Contract 3173.001 "Standardizing Boolean transforms to improve quality and runtime of CAD tools"
 and the NSA grant "Novel methods for synthesis and verification in cryptanalytic applications".
 
 ---
