@@ -81,10 +81,9 @@ Three representative sets of resub benchmarks are currently available:
 
 ### Acknowledgment
 
-This work is done in collaboration with Yukio Miyasaka (UC Berkeley), Alessandro Tempia Calvino (EPFL), and Andrea Costamagna (EFPL).
-
-It is supported in part by the SRC Contract 3173.001 ``Standardizing Boolean transforms to improve quality and runtime of CAD tools''
-and the NSA grant ``Novel methods for synthesis and verification in cryptanalytic applications''.
+This work is done in collaboration with Yukio Miyasaka (UC Berkeley), Alessandro Tempia Calvino (EPFL), and Andrea Costamagna (EFPL). 
+It is supported in part by the SRC Contract 3173.001 "Standardizing Boolean transforms to improve quality and runtime of CAD tools"
+and the NSA grant "Novel methods for synthesis and verification in cryptanalytic applications".
 
 ---
 
