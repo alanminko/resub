@@ -1,10 +1,10 @@
 
 ## Resubstitution Engines and Benchmarks
 
-This repository contains guidelines and benchmarks for running various resubstitution engines in [ABC](https://github.com/berkeley-abc/abc).
+This repository contains guidelines for running various resubstitution engines in [ABC](https://github.com/berkeley-abc/abc).
 
 The engines are exercised on the level of individual Boolean transforms. The focus is not high performance on specific benchmarks but rather
-conceptual understanding and implementation flexiblity needed for building new optimization frameworks based on resubstitution.
+conceptual understanding and implementation flexiblity needed for building efficient optimization frameworks based on Boolean resubstitution.
 
 ---
 
@@ -16,20 +16,21 @@ resub_unate | Fast resub based on detecting unate divisors | [paper](https://peo
 resub_core | Generic high-effort resub engine based on support selection | [paper](https://people.eecs.berkeley.edu/~alanmi/publications/2018/dac18_eco.pdf)
 twoexact | SAT-based exact synthesis with side-divisors | [paper](https://people.eecs.berkeley.edu/~alanmi/publications/2018/dac18_topo.pdf)
 
-The first engine is the fastest one among those described here. It works well when the resulting resub function contains only a few nodes.
+The first engine is the fastest one among those presented here. It works well when the resulting resub function contains only a few nodes.
 It is good for developing rewriting-style optimizations when relatively small (possibly six-input) cuts are computed, 
-followed by collecting a set of divisors supported by the cut. The divisor functions can be represented using truth tables 
+followed by collecting a set of divisors supported by each cut. The divisor functions can be represented using truth tables 
 (in the case of six-input cuts, each truth table is one 64-bit machine word).
-The fast unate resub can be applied to reexpress a target node or a set of target nodes in terms of other divisors supported by the cut.
+The fast unate resub can be applied to reexpress a target node in terms of other divisors supported by the cut.
+An efficient GPU-based implementation of this engine may be developed.
 
 The second engine uses more effort to perform two steps. Given a target node and a set of divisors, 
 the first step is to compute a small support (or a good-quality support if the divisors have non-unit weights)
 sufficient for expressing the target node. The second step is to find the new function of the node in terms of the support variables.
-This engine can be readily applied to incompletely-specified functions. It can be iterated to find solutions for multi-output functions.
-The engine was used to derive patch functions in the ECO engine, winning the first place in [2017 ICCAD CAD competition](https://www.iccad-contest.org/2017/) (Problem A).
+This engine works for incompletely-specified functions. It can be iterated to find solutions for multi-output functions.
+The engine was used to derive patch functions in the ECO application, winning the first place in [2017 ICCAD CAD competition](https://www.iccad-contest.org/2017/) (Problem A).
 
 The third engine is a high-effort SAT-based exact synthesis engine applicable to multi-output Boolean functions and relations with side-divisor, 
-that is, reusable divisor functions other than primary inputs (the original formulation of SAT-based exact synthesis did not consider side-divisors).
+that is, reusable divisor functions other than primary inputs. (The original formulation of SAT-based exact synthesis did not consider side-divisors).
 This engine computes the smallest possible implementation of the resub functions in terms of the number of nodes
 in an and-inverter graph (AIG) or an xor-and-inverter graph (XAIG).
 
@@ -78,6 +79,14 @@ Three representative sets of resub benchmarks are currently available:
 
 ---
 
+### Acknowledgment
+
+This work is done in collaboration with Yukio Miyasaka (UC Berkeley), Alessandro Tempia Calvino (EPFL), and Andrea Costamagna (EFPL).
+
+It is supported in part by the SRC Contract 3173.001 ``Standardizing Boolean transforms to improve quality and runtime of CAD tools''
+and the NSA grant ``Novel methods for synthesis and verification in cryptanalytic applications''.
+
+---
 
 
 
