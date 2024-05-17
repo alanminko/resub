@@ -1,9 +1,12 @@
+
 ## Resubstitution Engines and Benchmarks
 
 This repository contains guidelines and benchmarks for running various resubstitution engines in [ABC](https://github.com/berkeley-abc/abc).
 
 The engines are exercised on the level of individual Boolean transforms. The focus is not high performance on specific benchmarks but rather
 conceptual understanding and implementation flexiblity needed for building new optimization frameworks based on resubstitution.
+
+---
 
 ### Engine Taxonomy
 
@@ -13,23 +16,26 @@ resub_unate | Fast resub based on detecting unate divisors | [paper](https://peo
 resub_core | Generic high-effort resub engine based on support selection | [paper](https://people.eecs.berkeley.edu/~alanmi/publications/2018/dac18_eco.pdf)
 twoexact | SAT-based exact synthesis with side-divisors | [paper](https://people.eecs.berkeley.edu/~alanmi/publications/2018/dac18_topo.pdf)
 
-The first engine is fast and works well for the case when the resub function contains only a few nodes.
-It is good for developing rewriting-style optimizations when small (possibly six-input) cuts are computed first.
-A set of divisors supported by a cut is collected next. The functions of the divisors can be represented using truth tables 
-(in the case of six input, each truth table is one 64-bit machine word).
-The fast unate resub can be applied to reexpress a targe node or a set of target nodes in terms of other divisors supported by the cut.
+The first engine is the fastest one among those described here. It works well when the resulting resub function contains only a few nodes.
+It is good for developing rewriting-style optimizations when relatively small (possibly six-input) cuts are computed, 
+followed by collecting a set of divisors supported by the cut. The divisor functions can be represented using truth tables 
+(in the case of six-input cuts, each truth table is one 64-bit machine word).
+The fast unate resub can be applied to reexpress a target node or a set of target nodes in terms of other divisors supported by the cut.
 
-The second engine uses more effort to perform two steps. Given a target node and a set of divisors, the first step is compute a good-quality support
-sufficient for expressing the target node, followed by finding the new function of the node in terms of the support variables.
-This engine can be applied to incompletely specified functions. It can be iterated to find solutions for multi-output functions.
-The engine was used to derive patch functions in the ECO engine, which won the first place in [2017 ICCAD CAD competition][https://www.iccad-contest.org/2017/] (Problem A).
+The second engine uses more effort to perform two steps. Given a target node and a set of divisors, 
+the first step is to compute a small support (or a good-quality support if the divisors have non-unit weights)
+sufficient for expressing the target node. The second step is to find the new function of the node in terms of the support variables.
+This engine can be readily applied to incompletely-specified functions. It can be iterated to find solutions for multi-output functions.
+The engine was used to derive patch functions in the ECO engine, winning the first place in [2017 ICCAD CAD competition](https://www.iccad-contest.org/2017/) (Problem A).
 
 The third engine is a high-effort SAT-based exact synthesis engine applicable to multi-output Boolean functions and relations with side-divisor, 
 that is, reusable divisor functions other than primary inputs (the original formulation of SAT-based exact synthesis did not consider side-divisors).
-This engine finds the smallest possible implementation of the resub functions in terms of the number of nodes
+This engine computes the smallest possible implementation of the resub functions in terms of the number of nodes
 in an and-inverter graph (AIG) or an xor-and-inverter graph (XAIG).
 
 The three engines presented here have a shared input/output representation format.
+
+---
 
 ### Input Format
 
@@ -44,15 +50,21 @@ The modifications include
 Examples of completely-specified functions, incompletely-specified functions, and Boolean relations represented by the proposed format 
 can be found in Figure 1 of the following [technical report](https://people.eecs.berkeley.edu/~alanmi/publications/2024/tech24_resub.pdf).
 
+---
+
 ### Output Format
 
 The output format represents the resulting AIGs or XAIGs as arrays of node fanins.
 
 An example of the AIG produced by a resubstitution engine is given in Section V of the [technical report](https://people.eecs.berkeley.edu/~alanmi/publications/2024/tech24_resub.pdf).
 
+---
+
 ### Verification
 
 The results produced by the resub engines can be verified using command "resub_check".
+
+---
 
 ### Benchmarks
 
