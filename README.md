@@ -36,7 +36,7 @@ or an xor-and-inverter graph (XAIG). It is the only engine capable of true multi
 resub for each output, but considers the whole multi-output relation as the specification and derives a minimum-node circuit satisfying this relation. 
 An obvious limitation of this engine that it only works for functions up to six input and up to 10 nodes in the synthesized circuit.
 
-The three engines presented here can be applied to individual resub instances specified using a shared input/output representation format.
+The three engines presented here can be applied to individual resub instances specified using a common representation format.
 
 ---
 
@@ -61,6 +61,8 @@ The output format for a synthesized circuit is an (X)AIGs represented as an arra
 
 An example of the AIG produced by a resubstitution engine can be found in Section V of the [technical report](https://people.eecs.berkeley.edu/~alanmi/publications/2024/tech24_resub.pdf).
 
+The resulting circuits can be written into a file in the [AIGER format](https://fmv.jku.at/aiger/index.html).
+
 ---
 
 ### Verification
@@ -83,7 +85,7 @@ Three representative sets of resub benchmarks are currently available:
 
 ### Acknowledgment
 
-This work is done in collaboration with Yukio Miyasaka (UC Berkeley), Alessandro Tempia Calvino (EPFL), and Andrea Costamagna (EFPL).
+This work is done in collaboration with Yukio Miyasaka (UC Berkeley), Alessandro Tempia Calvino (EPFL), and Andrea Costamagna (EPFL).
 It is supported at UC Berkeley by the SRC Contract 3173.001 "Standardizing Boolean transforms to improve quality and runtime of CAD tools"
 and the NSA Grant "Novel methods for synthesis and verification in cryptanalytic applications".
 
